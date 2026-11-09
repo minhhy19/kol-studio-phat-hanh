@@ -1,0 +1,1508 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hướng dẫn sử dụng KOL Studio – Sổ tay trực quan kèm hình ảnh</title>
+    <style>
+      :root {
+        --bg-app: #0b0d13;
+        --bg-panel: #111520;
+        --bg-surface: #171c2b;
+        --bg-raised: #1e2538;
+        --bg-active: #27304a;
+        --text: #f1f5f9;
+        --text-muted: #94a3b8;
+        --text-subtle: #64748b;
+        --accent: #7c5cff;
+        --accent-hover: #8f73ff;
+        --accent-soft: rgba(124, 92, 255, 0.16);
+        --accent-text: #c4b5fd;
+        --danger: #e0244a;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --border: #232a3d;
+        --border-strong: #333d58;
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+        --font-sans: "Inter", "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+        --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        font-size: 15px;
+        line-height: 1.65;
+        color: var(--text);
+        background: var(--bg-app);
+      }
+
+      /* Topbar */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 58px;
+        padding: 0 24px;
+        background: rgba(11, 13, 19, 0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .logo-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #7c5cff, #5a38e6);
+        color: #fff;
+        font-weight: 800;
+        font-size: 15px;
+        box-shadow: 0 4px 12px rgba(124, 92, 255, 0.35);
+      }
+
+      .brand-sub {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-text);
+        border: 1px solid rgba(124, 92, 255, 0.35);
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        background: var(--bg-surface);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .btn:hover {
+        background: var(--bg-active);
+        border-color: var(--accent);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+
+      /* Layout */
+      .layout {
+        display: grid;
+        grid-template-columns: 270px minmax(0, 1fr);
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        position: sticky;
+        top: 58px;
+        height: calc(100vh - 58px);
+        overflow-y: auto;
+        padding: 20px 16px 32px;
+        background: var(--bg-panel);
+        border-right: 1px solid var(--border);
+      }
+
+      .nav-group-title {
+        margin: 16px 10px 6px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-subtle);
+      }
+
+      .nav-group-title:first-child {
+        margin-top: 0;
+      }
+
+      .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 13.5px;
+        font-weight: 500;
+        transition: all 0.15s ease;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--text);
+        background: var(--bg-surface);
+      }
+
+      .nav-link.active {
+        color: var(--accent-text);
+        background: var(--accent-soft);
+        font-weight: 600;
+      }
+
+      .nav-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: var(--bg-raised);
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 700;
+        flex: none;
+      }
+
+      .nav-link.active .nav-num {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      /* Main content */
+      .content {
+        padding: 36px 48px 96px;
+        max-width: 1080px;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 28px 32px;
+        border-radius: var(--radius-lg);
+        background: radial-gradient(circle at top right, rgba(124, 92, 255, 0.24), transparent 55%),
+          linear-gradient(180deg, var(--bg-surface), var(--bg-panel));
+        border: 1px solid var(--border-strong);
+        margin-bottom: 36px;
+      }
+
+      .hero h1 {
+        margin: 0 0 10px;
+        font-size: 28px;
+        line-height: 1.25;
+      }
+
+      .hero p {
+        margin: 0 0 20px;
+        color: var(--text-muted);
+        font-size: 16px;
+        max-width: 780px;
+      }
+
+      .quick-steps {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .quick-step {
+        padding: 14px 16px;
+        border-radius: var(--radius-md);
+        background: rgba(17, 21, 32, 0.85);
+        border: 1px solid var(--border);
+      }
+
+      .quick-step-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-text);
+        font-weight: 700;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .quick-step strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .quick-step span {
+        font-size: 12.5px;
+        color: var(--text-muted);
+      }
+
+      /* Sections */
+      section {
+        margin-bottom: 56px;
+        scroll-margin-top: 78px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--accent-soft);
+        color: var(--accent-text);
+        font-weight: 800;
+        font-size: 15px;
+        border: 1px solid rgba(124, 92, 255, 0.35);
+      }
+
+      section h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      section h3 {
+        margin: 24px 0 10px;
+        font-size: 17px;
+        color: #e2e8f0;
+      }
+
+      p {
+        margin: 0 0 14px;
+      }
+
+      ul,
+      ol {
+        margin: 0 0 16px;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 6px;
+      }
+
+      /* Callouts */
+      .callout {
+        padding: 14px 18px;
+        border-radius: var(--radius-md);
+        background: var(--bg-surface);
+        border-left: 4px solid var(--accent);
+        margin: 16px 0;
+        font-size: 14px;
+      }
+
+      .callout.warn {
+        border-left-color: var(--warning);
+        background: rgba(245, 158, 11, 0.08);
+      }
+
+      .callout.tip {
+        border-left-color: var(--success);
+        background: rgba(34, 197, 94, 0.08);
+      }
+
+      .callout strong {
+        color: #fff;
+      }
+
+      /* Image Figures & Grids */
+      .shot-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin: 18px 0 24px;
+      }
+
+      .shot-grid.single {
+        grid-template-columns: 1fr;
+      }
+
+      figure.shot {
+        margin: 0;
+        background: var(--bg-panel);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+      }
+
+      figure.shot img {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: zoom-in;
+        transition: transform 0.2s ease;
+        background: #07090e;
+      }
+
+      figure.shot img:hover {
+        transform: scale(1.01);
+      }
+
+      figure.shot figcaption {
+        padding: 10px 14px;
+        font-size: 13px;
+        color: var(--text-muted);
+        background: var(--bg-surface);
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .zoom-hint {
+        font-size: 11px;
+        color: var(--accent-text);
+        white-space: nowrap;
+      }
+
+      /* Keycaps & Code */
+      kbd {
+        display: inline-block;
+        min-width: 22px;
+        padding: 1px 7px;
+        font-family: var(--font-sans);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        text-align: center;
+        color: var(--text);
+        background: var(--bg-active);
+        border: 1px solid var(--border-strong);
+        border-bottom-width: 2px;
+        border-radius: 5px;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        padding: 2px 6px;
+        border-radius: 5px;
+        background: var(--bg-raised);
+        color: #e2e8f0;
+      }
+
+      pre {
+        margin: 12px 0 18px;
+        padding: 14px 18px;
+        border-radius: var(--radius-md);
+        background: #080a10;
+        border: 1px solid var(--border-strong);
+        overflow-x: auto;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      pre code {
+        padding: 0;
+        background: none;
+      }
+
+      /* Feature Cards */
+      .feature-cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin: 16px 0;
+      }
+
+      .card {
+        padding: 16px 18px;
+        border-radius: var(--radius-md);
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+      }
+
+      .card h4 {
+        margin: 0 0 6px;
+        font-size: 15px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card p {
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--text-muted);
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0 22px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        font-size: 14px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--bg-surface);
+        font-weight: 600;
+        color: #e2e8f0;
+        font-size: 13px;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Interactive Shortcuts Filter */
+      .shortcut-Widget {
+        padding: 20px;
+        border-radius: var(--radius-md);
+        background: var(--bg-panel);
+        border: 1px solid var(--border-strong);
+        margin-top: 16px;
+      }
+
+      .shortcut-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 240px;
+        padding: 9px 14px;
+        border-radius: var(--radius-sm);
+        background: var(--bg-surface);
+        border: 1px solid var(--border-strong);
+        color: var(--text);
+        font-size: 14px;
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-soft);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .chip {
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 500;
+        background: var(--bg-surface);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .chip:hover {
+        color: var(--text);
+        border-color: var(--border-strong);
+      }
+
+      .chip.active {
+        background: var(--accent-soft);
+        color: var(--accent-text);
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* Lightbox Modal */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: rgba(5, 7, 11, 0.92);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        cursor: zoom-out;
+      }
+
+      .lightbox.open {
+        display: flex;
+      }
+
+      .lightbox-inner {
+        max-width: 95vw;
+        max-height: 92vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .lightbox img {
+        max-width: 95vw;
+        max-height: 84vh;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-strong);
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+      }
+
+      .lightbox-caption {
+        font-size: 14px;
+        color: var(--text);
+        background: var(--bg-surface);
+        padding: 6px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--border-strong);
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: static;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .content {
+          padding: 24px 20px 64px;
+        }
+        .quick-steps,
+        .shot-grid,
+        .feature-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="#top" class="brand">
+        <span class="logo-badge">K</span>
+        <span>KOL Studio</span>
+        <span class="brand-sub">Sổ tay hướng dẫn kèm hình ảnh</span>
+      </a>
+      <div class="topbar-actions">
+        <a href="#phim-tat" class="btn">⌨️ Tra cứu phím tắt</a>
+        <a href="#loi-thuong-gap" class="btn">🛠️ Xử lý lỗi</a>
+        <a href="#danh-cho-chu-du-an" class="btn btn-primary">📦 Đóng gói & Phát hành</a>
+      </div>
+    </header>
+
+    <div class="layout" id="top">
+      <aside class="sidebar">
+        <div class="nav-group-title">Bắt đầu nhanh</div>
+        <ul class="nav-list">
+          <li>
+            <a href="#cai-dat" class="nav-link active"><span class="nav-num">1</span> Cài đặt & Mở lần đầu</a>
+          </li>
+          <li>
+            <a href="#du-an-mau" class="nav-link"><span class="nav-num">2</span> Trang chủ & Dự án mẫu 5s</a>
+          </li>
+          <li>
+            <a href="#bo-cuc-timeline" class="nav-link"><span class="nav-num">3</span> Bố cục Editor & Timeline</a>
+          </li>
+        </ul>
+
+        <div class="nav-group-title">Tính năng dựng video</div>
+        <ul class="nav-list">
+          <li>
+            <a href="#chu-nhan-dan" class="nav-link"><span class="nav-num">4</span> Chữ, Mẫu Sale, Nhãn dán & Ô che</a>
+          </li>
+          <li>
+            <a href="#giong-doc-ai" class="nav-link"><span class="nav-num">5</span> AI Giọng đọc & Clone giọng</a>
+          </li>
+          <li>
+            <a href="#phu-de-ai" class="nav-link"><span class="nav-num">6</span> AI Phụ đề tô từ, Dịch & Lồng tiếng</a>
+          </li>
+          <li>
+            <a href="#xuat-video" class="nav-link"><span class="nav-num">7</span> Xuất video & Hàng đợi GPU</a>
+          </li>
+          <li>
+            <a href="#mcp-ai" class="nav-link"><span class="nav-num">8</span> Cho AI tự dựng video (MCP)</a>
+          </li>
+        </ul>
+
+        <div class="nav-group-title">Tra cứu & Hỗ trợ</div>
+        <ul class="nav-list">
+          <li>
+            <a href="#phim-tat" class="nav-link"><span class="nav-num">9</span> Bảng phím tắt tương tác</a>
+          </li>
+          <li>
+            <a href="#loi-thuong-gap" class="nav-link"><span class="nav-num">10</span> Cập nhật, Lỗi & Báo lỗi</a>
+          </li>
+          <li>
+            <a href="#danh-cho-chu-du-an" class="nav-link"><span class="nav-num">11</span> Đóng gói & Tạo Repo Release</a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="content">
+        <!-- Hero -->
+        <div class="hero">
+          <h1>Hướng dẫn sử dụng KOL Studio</h1>
+          <p>
+            Ứng dụng Windows chuyên dựng video ngắn dọc (TikTok, Reels, Shorts) với timeline đa lớp tốc độ cao, chữ và mẫu
+            quảng cáo sắc nét, kết hợp AI giọng đọc tiếng Việt (clone giọng offline miễn phí), phụ đề nhảy theo từng từ và
+            lồng tiếng tự động.
+          </p>
+          <div class="quick-steps">
+            <div class="quick-step">
+              <span class="quick-step-num">1</span>
+              <strong>Nhập media</strong>
+              <span>Kéo thả video, ảnh, nhạc vào Thư viện media (hoặc bấm Tạo dự án mẫu để thử ngay).</span>
+            </div>
+            <div class="quick-step">
+              <span class="quick-step-num">2</span>
+              <strong>Dựng trên Timeline</strong>
+              <span>Kéo file xuống timeline, cắt mép, tách bằng <kbd>Ctrl</kbd>+<kbd>B</kbd>, chỉnh thuộc tính.</span>
+            </div>
+            <div class="quick-step">
+              <span class="quick-step-num">3</span>
+              <strong>Chữ, Giọng & Phụ đề</strong>
+              <span>Thêm mẫu Sale, nhãn dán, ô che, đọc kịch bản AI và tạo phụ đề tô từng từ.</span>
+            </div>
+            <div class="quick-step">
+              <span class="quick-step-num">4</span>
+              <strong>Xuất video GPU</strong>
+              <span>Bấm Xuất ở góc phải trên, chọn chất lượng và để hàng đợi xuất chạy nền.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. Cài đặt -->
+        <section id="cai-dat">
+          <div class="section-header">
+            <span class="section-badge">1</span>
+            <h2>Cài đặt & Mở ứng dụng lần đầu</h2>
+          </div>
+          <ol>
+            <li>
+              Tải bộ cài một file duy nhất <code>KOL-Studio_&lt;phiên-bản&gt;_x64-setup.exe</code> từ trang phát hành
+              <a
+                href="https://github.com/minhhy19/kol-studio-phat-hanh/releases/latest"
+                target="_blank"
+                rel="noopener"
+                style="color: var(--accent-text)"
+                >github.com/minhhy19/kol-studio-phat-hanh/releases/latest</a
+              >
+              (hoặc nhận trực tiếp file <code>.exe</code> từ chủ dự án).
+            </li>
+            <li>
+              Bấm đúp để cài đặt. Nếu Windows SmartScreen hiện bảng xanh <em>"Windows đã bảo vệ máy tính của bạn"</em> (do bộ
+              cài chưa mua chứng chỉ thương mại), bấm <strong>Thông tin thêm (More info)</strong> →
+              <strong>Vẫn chạy (Run anyway)</strong>.
+            </li>
+            <li>Mở <strong>KOL Studio</strong> từ Start Menu hoặc biểu tượng Desktop.</li>
+          </ol>
+          <div class="callout tip">
+            <strong>Không cần cài thêm công cụ phụ:</strong> Bộ cài đã đóng gói sẵn <code>ffmpeg</code> để dựng và xuất video
+            bằng GPU ngay lập tức. Phần AI (giọng đọc, phụ đề Whisper, tách nhạc nền) chỉ tải thêm khi bạn bấm vào tab AI lần
+            đầu để bộ cài gốc luôn gọn nhẹ.
+          </div>
+        </section>
+
+        <!-- 2. Trang chủ & Dự án mẫu -->
+        <section id="du-an-mau">
+          <div class="section-header">
+            <span class="section-badge">2</span>
+            <h2>Trang chủ dự án & Thử ngay với Dự án mẫu 5 giây</h2>
+          </div>
+          <p>
+            Khi mở KOL Studio, bạn vào <strong>Trang chủ dự án</strong>. Mọi dự án bạn tạo đều được <strong>tự động lưu</strong>
+            liên tục trong lúc dựng (không cần bấm nút Lưu).
+          </p>
+
+          <div class="shot-grid single">
+            <figure class="shot">
+              <img src="anh/trang-chu.png" alt="Trang chủ KOL Studio" />
+              <figcaption>
+                <span>Trang chủ KOL Studio: tìm kiếm dự án không cần dấu, Nhập file .kolp, Tạo dự án mẫu và + Dự án mới.</span>
+                <span class="zoom-hint">🔍 Bấm ảnh để phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <h3>Thử mọi thao tác trong 1 giây với "Tạo dự án mẫu"</h3>
+          <p>
+            Nếu bạn vừa cài máy và chưa có sẵn video, chỉ cần bấm nút <strong>Tạo dự án mẫu</strong> trên Trang chủ. App sẽ tự
+            sinh một dự án dọc <code>9:16</code> dài <strong>5 giây</strong> rồi mở thẳng vào Editor:
+          </p>
+          <ul>
+            <li><strong>2 cảnh nền chuyển màu</strong> trên track chính.</li>
+            <li><strong>Chữ khuyến mãi "GIẢM 50%"</strong> hộp đỏ có hiệu ứng phóng vào và mờ ra trong vùng an toàn TikTok.</li>
+            <li><strong>2 câu phụ đề có mốc từng từ</strong>, từ đang đọc tự phóng to và đổi sang màu vàng.</li>
+            <li><strong>Nhạc nền hợp âm nhẹ</strong> (−19 dB, êm tai khi bấm <kbd>Space</kbd> nghe thử).</li>
+          </ul>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/du-an-mau.png" alt="Dự án mẫu cảnh 1" />
+              <figcaption>
+                <span>Dự án mẫu mở sẵn ở giây 00:01: thấy ngay chữ "GIẢM 50%" và từ "bạn" đang được tô vàng.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/du-an-mau-canh-2.png" alt="Dự án mẫu cảnh 2" />
+              <figcaption>
+                <span>Cảnh 2 (giây 03:15): chuyển sang nền xanh tím và câu phụ đề thứ hai.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <h3>Mở và chuyển dự án sang máy khác (file <code>.kolp</code>)</h3>
+          <ul>
+            <li>
+              <strong>Xuất dự án:</strong> Ở Trang chủ, bấm nút <strong>⋯</strong> trên thẻ dự án →
+              <strong>Xuất file .kolp</strong>. Lưu ý: file <code>.kolp</code> chỉ lưu cấu trúc timeline và đường dẫn, không
+              nhét video gốc vào trong — khi chép sang máy khác, hãy chép kèm các file video/nhạc để cạnh file
+              <code>.kolp</code>, app sẽ tự nối lại.
+            </li>
+            <li>
+              <strong>Mở lại:</strong> Bấm đúp trực tiếp vào file <code>.kolp</code> trong Windows Explorer, kéo thả vào Trang
+              chủ, hoặc bấm <strong>Nhập file .kolp</strong>.
+            </li>
+          </ul>
+        </section>
+
+        <!-- 3. Bố cục Editor & Timeline -->
+        <section id="bo-cuc-timeline">
+          <div class="section-header">
+            <span class="section-badge">3</span>
+            <h2>Bố cục Editor 5 vùng & Thao tác trên Timeline</h2>
+          </div>
+          <p>Màn hình dựng video chia thành 5 vùng co giãn được bằng thanh kéo:</p>
+          <div class="feature-cards">
+            <div class="card">
+              <h4>1. Thanh trên cùng (TopBar)</h4>
+              <p>
+                Nút quay về Trang chủ, đổi tên dự án tại chỗ, trạng thái <em>"✓ Đã lưu"</em>, nút <strong>?</strong> (Hướng dẫn
+                & Phím tắt), nút <strong>i</strong> (Thông tin ứng dụng & Gói AI), Hàng đợi xuất và nút <strong>Xuất</strong>.
+              </p>
+            </div>
+            <div class="card">
+              <h4>2. Cột trái (5 tab công cụ)</h4>
+              <p>
+                <strong>Media</strong> (nhập & lọc video/ảnh/nhạc), <strong>Chữ</strong> (kiểu chữ & mẫu quảng cáo),
+                <strong>Nhãn dán</strong> (emoji, ảnh, ô che), <strong>Giọng đọc</strong> (TTS & clone giọng),
+                <strong>Phụ đề</strong> (Whisper, dịch, lồng tiếng).
+              </p>
+            </div>
+            <div class="card">
+              <h4>3. Khung xem trước (Preview)</h4>
+              <p>
+                Chuyển đổi giữa xem <strong>Timeline</strong> đa lớp và xem từng <strong>File</strong> trong thư viện. Cho phép
+                kéo, co giãn, xoay lớp phủ/chữ trực tiếp trên hình và bấm đúp để sửa chữ tại chỗ.
+              </p>
+            </div>
+            <div class="card">
+              <h4>4. Cột phải (Thuộc tính)</h4>
+              <p>
+                Tự đổi theo đối tượng đang chọn: chỉnh Vị trí (X, Y), Tỉ lệ, Góc xoay, Độ mờ, Cách đặt khung (Phủ kín / Vừa
+                khung), Âm lượng, Tốc độ phát (0.25× – 4×), hoặc Kiểu chữ / Kiểu phụ đề / Ô che.
+              </p>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Hỗ trợ tự động video iPhone (HEVC / ProRes / AVI):</strong> Nếu bạn nhập video quay từ iPhone mà WebView của
+            Windows chưa giải mã được, KOL Studio tự động tạo <strong>bản xem trước H.264 bằng GPU</strong> ở nền để bạn dựng
+            mượt mà; lúc xuất video hoàn chỉnh app vẫn lấy <strong>file gốc chất lượng cao nhất</strong>.
+          </div>
+
+          <h3>Thao tác chính trên Timeline (Vùng 5)</h3>
+          <ul>
+            <li>
+              <strong>Thêm vào timeline:</strong> Kéo media từ Thư viện thả xuống timeline. Thả lên trên track chính sẽ tạo
+              <strong>track lớp phủ (PIP)</strong>.
+            </li>
+            <li>
+              <strong>Cắt & Tách:</strong> Kéo 2 mép trái/phải của clip để cắt bớt đầu/cuối; đặt đầu phát tới vị trí cần cắt đôi
+              rồi bấm <kbd>Ctrl</kbd>+<kbd>B</kbd> (hoặc biểu tượng cái kéo trên thanh công cụ timeline).
+            </li>
+            <li>
+              <strong>Track chính tự khép khoảng trống:</strong> Xoá hoặc rút ngắn cảnh trên track chính thì các cảnh sau tự
+              dồn sát lại để video không bị hở màn đen.
+            </li>
+            <li>
+              <strong>Quản lý Track:</strong> Ở đầu mỗi track bên trái có nút <strong>Ẩn/Hiện</strong> (con mắt),
+              <strong>Tắt tiếng</strong> (loa), <strong>Khoá track</strong> (ổ khoá), và kéo đổi thứ tự chồng lớp giữa các
+              track chữ / lớp phủ.
+            </li>
+          </ul>
+        </section>
+
+        <!-- 4. Chữ, Mẫu quảng cáo, Nhãn dán & Ô che -->
+        <section id="chu-nhan-dan">
+          <div class="section-header">
+            <span class="section-badge">4</span>
+            <h2>Chữ, Mẫu quảng cáo, Nhãn dán & Ô che thông tin</h2>
+          </div>
+
+          <h3>Tab Chữ & Thư viện Mẫu quảng cáo dựng sẵn</h3>
+          <p>
+            Mở tab <strong>Chữ</strong> ở cột trái: bạn có thể thêm kiểu chữ cơ bản hoặc chọn ngay các
+            <strong>Mẫu quảng cáo dành cho KOL</strong> (Flash Sale, Giảm giá, Giá sốc có gạch ngang giá cũ, Mua ngay, Đánh giá
+            sản phẩm…). Mọi phông chữ đều hỗ trợ đầy đủ dấu tiếng Việt và hiển thị giống hệt 100% giữa khung xem trước và video
+            xuất ra.
+          </p>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/tab-chu.png" alt="Tab Chữ và Mẫu quảng cáo" />
+              <figcaption>
+                <span>Tab Chữ: các kiểu chữ dựng sẵn và Thư viện mẫu quảng cáo nhiều thành phần.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/sua-tai-cho.png" alt="Bấm đúp sửa chữ tại chỗ" />
+              <figcaption>
+                <span>Bấm đúp vào chữ hoặc phụ đề ngay trên khung xem trước để gõ sửa lời trực tiếp (<kbd>Ctrl</kbd>+<kbd>Enter</kbd> để lưu).</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <h3>Tab Nhãn dán: Emoji, Ảnh PNG & Ô che (Làm mờ / Che màu / Khảm Pixel)</h3>
+          <p>
+            Mở tab <strong>Nhãn dán</strong> để chèn biểu tượng cảm xúc (Emoji), nhập ảnh nền trong suốt (logo, khung viền PNG),
+            hoặc thêm <strong>Ô che</strong> để giấu số điện thoại, địa chỉ, biển số xe, logo nhãn hàng khác:
+          </p>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/tab-nhan-dan.png" alt="Tab Nhãn dán" />
+              <figcaption>
+                <span>Tab Nhãn dán: chọn nhanh Emoji, thêm ảnh nhãn dán hoặc tạo Ô che vùng nhạy cảm.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/lam-mo-va-kham.png" alt="Ô che làm mờ và khảm điểm ảnh" />
+              <figcaption>
+                <span>3 chế độ Ô che: Làm mờ (Blur), Khảm điểm ảnh (Pixelate) và Che màu đặc — chỉnh độ nhoè/cỡ ô ở cột Thuộc tính.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 5. Giọng đọc AI & Clone giọng -->
+        <section id="giong-doc-ai">
+          <div class="section-header">
+            <span class="section-badge">5</span>
+            <h2>AI Giọng đọc tiếng Việt & Clone giọng cá nhân</h2>
+          </div>
+          <p>
+            Lần đầu tiên bạn mở tab <strong>Giọng đọc</strong> hoặc <strong>Phụ đề</strong>, nếu máy chưa cài gói AI, app sẽ
+            hiện thẻ <strong>Tải gói AI</strong> (~500 MB tải về, có thanh tiến độ và nút Huỷ). Sau khi tải xong một lần, dịch
+            vụ AI tự động bật ngầm mỗi khi bạn dùng và tự giải phóng RAM sau 5 phút nghỉ.
+          </p>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/tai-goi-ai.png" alt="Thẻ tải gói AI theo nhu cầu" />
+              <figcaption>
+                <span>Lần đầu vào tab Giọng đọc / Phụ đề: bấm "Tải gói AI" ngay trong ứng dụng.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/giong-doc.png" alt="Tab Giọng đọc tạo clip âm thanh" />
+              <figcaption>
+                <span>Chọn giọng đọc, nhập kịch bản và bấm đọc: clip âm thanh tự đặt vào đúng vị trí đầu phát trên timeline.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <h3>Nhân bản giọng nói (Clone giọng) từ mẫu 3–15 giây</h3>
+          <ul>
+            <li>
+              <strong>VieNeu-TTS (Offline, miễn phí 100%):</strong> Chạy trực tiếp trên CPU/GPU máy bạn, chuyên tiếng Việt, chỉ
+              cần file mẫu thu âm sạch từ 3–10 giây kèm câu văn bản của mẫu đó.
+            </li>
+            <li>
+              <strong>MiniMax (Cloud):</strong> Cần nhập API Key trong phần cài đặt; trước khi dùng giọng tính phí hoặc clone
+              giọng, ứng dụng luôn hỏi xác nhận rõ ràng kèm số ký tự.
+            </li>
+          </ul>
+
+          <div class="shot-grid single">
+            <figure class="shot">
+              <img src="anh/clone-giong.png" alt="Hộp thoại Clone giọng" />
+              <figcaption>
+                <span>Hộp thoại Clone giọng: chọn file âm thanh mẫu (3–15 giây), nhập lời thoại mẫu và xác nhận quyền sử dụng giọng.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 6. Phụ đề AI -->
+        <section id="phu-de-ai">
+          <div class="section-header">
+            <span class="section-badge">6</span>
+            <h2>AI Phụ đề nhảy theo từng từ, Tách giọng, Dịch & Lồng tiếng</h2>
+          </div>
+          <p>Tab <strong>Phụ đề</strong> giúp bạn xử lý trọn gói phần lời thoại của video:</p>
+          <ol>
+            <li>
+              <strong>Tạo phụ đề tự động (Whisper):</strong> Nhận diện tiếng Việt/ngoại ngữ ra từng câu phụ đề trên track
+              <code>Phụ đề</code> kèm <strong>mốc thời gian chính xác của từng từ</strong>.
+            </li>
+            <li>
+              <strong>Chữ nhảy / tô màu theo từng từ đang đọc:</strong> Chọn một câu phụ đề → ở cột <strong>Thuộc tính</strong>,
+              bật chế độ tô từ (Đổi màu, Phóng to từ đang đọc, hoặc Hộp nền chạy theo từ) giống phong cách TikTok/CapCut.
+            </li>
+            <li>
+              <strong>Tách giọng / Nhạc nền:</strong> Bấm <strong>Tách giọng</strong> để AI tách âm thanh gốc thành 2 track
+              riêng biệt (Giọng nói và Nhạc nền), rất tiện khi bạn muốn giữ nhạc nền gốc nhưng thay lời lồng tiếng mới.
+            </li>
+            <li>
+              <strong>Dịch phụ đề & Lồng tiếng theo phụ đề:</strong> Dịch toàn bộ phụ đề sang ngôn ngữ khác (hoặc từ ngoại ngữ
+              về tiếng Việt) rồi bấm <strong>Lồng tiếng</strong> để AI đọc khớp từng câu phụ đề trên timeline.
+            </li>
+          </ol>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/phu-de-tu-dong.png" alt="Tab Phụ đề tự động" />
+              <figcaption>
+                <span>Tab Phụ đề: danh sách câu phụ đề đồng bộ với đầu phát, bấm vào câu để sửa nhanh hoặc tua tới câu đó.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/dich-phu-de.png" alt="Hộp thoại Dịch phụ đề" />
+              <figcaption>
+                <span>Hộp thoại Dịch phụ đề sang ngôn ngữ đích, giữ nguyên mốc thời gian từng câu.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/long-tieng.png" alt="Hộp thoại Lồng tiếng" />
+              <figcaption>
+                <span>Hộp thoại Lồng tiếng theo phụ đề: chọn giọng đọc và tự động canh khớp thời lượng từng câu.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/phu-de-nhay-tu.png" alt="Thuộc tính phụ đề tô từng từ" />
+              <figcaption>
+                <span>Cột Thuộc tính của Phụ đề: chọn kiểu tô từ đang đọc (Đổi màu, Phóng to, Hộp nền) và vị trí cao thấp.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 7. Xuất video -->
+        <section id="xuat-video">
+          <div class="section-header">
+            <span class="section-badge">7</span>
+            <h2>Xuất video & Hàng đợi xuất nền bằng GPU</h2>
+          </div>
+          <p>
+            Khi dựng xong, bấm nút <strong>Xuất</strong> màu tím ở góc phải trên cùng:
+          </p>
+          <ul>
+            <li>Chọn <strong>Độ phân giải</strong> (1080p chuẩn TikTok, 720p, 4K…) và <strong>Chất lượng</strong>.</li>
+            <li>
+              Tuỳ chọn <strong>Cháy phụ đề vào hình</strong> (vẽ phụ đề trực tiếp lên video) — đồng thời file phụ đề rời
+              <code>.srt</code> luôn được xuất kèm cạnh file <code>.mp4</code>.
+            </li>
+            <li>
+              App tự động chọn <strong>bộ mã hoá phần cứng GPU</strong> (AMD AMF, NVIDIA NVENC, Intel QSV) và nhớ trên đĩa; nếu
+              GPU gặp sự cố, app tự chuyển sang CPU để đảm bảo xuất thành công.
+            </li>
+            <li>
+              Nhiều video có thể xếp vào <strong>Hàng đợi xuất</strong> (biểu tượng cạnh nút Xuất) để chạy lần lượt ở nền trong
+              khi bạn tiếp tục sửa dự án khác.
+            </li>
+          </ul>
+
+          <div class="shot-grid single">
+            <figure class="shot" style="max-width: 560px">
+              <img src="anh/hop-thoai-xuat.png" alt="Hộp thoại Xuất video" />
+              <figcaption>
+                <span>Hộp thoại Xuất video: chọn nơi lưu, độ phân giải, chất lượng, bộ mã hoá và tuỳ chọn phụ đề trên hình.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- 8. MCP -->
+        <section id="mcp-ai">
+          <div class="section-header">
+            <span class="section-badge">8</span>
+            <h2>Cho AI tự dựng video qua MCP (Claude Desktop / Claude Code)</h2>
+          </div>
+          <p>
+            Ngoài việc tự dựng trên giao diện, KOL Studio tích hợp sẵn <strong>MCP Server</strong> để trợ lý AI (như Claude
+            Desktop hoặc Claude Code) nhận ảnh sản phẩm + kịch bản từ bạn và tự dựng ra video hoàn chỉnh, tự kiểm tra khung
+            hình, âm lượng, vùng an toàn TikTok rồi cho phép bạn mở lại ngay trong Editor để tinh chỉnh thêm.
+          </p>
+          <ol>
+            <li>Đảm bảo đã tải <strong>Gói AI</strong> (xem mục 5).</li>
+            <li>
+              Bấm nút <strong>i (Thông tin ứng dụng)</strong> trên thanh trên cùng → tại dòng <strong>Kết nối AI (MCP)</strong>,
+              bấm <strong>Chép cấu hình MCP</strong>.
+            </li>
+            <li>
+              Mở Claude Desktop (<em>Settings → Developer → Edit Config</em>), dán vào file
+              <code>claude_desktop_config.json</code> rồi khởi động lại Claude Desktop.
+            </li>
+            <li>
+              Gửi ảnh sản phẩm và yêu cầu cho Claude, ví dụ:
+              <em>"Dựng video TikTok 20 giây giới thiệu sản phẩm từ 3 ảnh này, giọng nữ miền Nam, có phụ đề và chữ khuyến mãi"</em>.
+            </li>
+          </ol>
+        </section>
+
+        <!-- 9. Phím tắt -->
+        <section id="phim-tat">
+          <div class="section-header">
+            <span class="section-badge">9</span>
+            <h2>Bảng Phím tắt & Tìm kiếm nhanh (nhấn <kbd>?</kbd> hoặc <kbd>F1</kbd> trong app)</h2>
+          </div>
+          <p>
+            Trong ứng dụng, bạn có thể nhấn phím <kbd>?</kbd> hoặc <kbd>F1</kbd> bất cứ lúc nào (khi không gõ chữ trong ô nhập)
+            để mở hộp thoại <strong>Hướng dẫn & phím tắt</strong>. Bạn cũng có thể tra cứu trực tiếp ngay dưới đây:
+          </p>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/huong-dan.png" alt="Hộp thoại Hướng dẫn và phím tắt" />
+              <figcaption>
+                <span>Hộp thoại Hướng dẫn & phím tắt trong app (mở bằng nút ? hoặc phím ? / F1).</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/tim-ctrl-z.png" alt="Tìm kiếm phím tắt tức thì" />
+              <figcaption>
+                <span>Gõ từ khoá không cần dấu (VD: "tach") hoặc tên phím ("ctrl z") để lọc ngay lập tức.</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="shortcut-Widget">
+            <div class="shortcut-controls">
+              <input
+                type="search"
+                id="sc-search"
+                class="search-input"
+                placeholder="Tìm theo việc hoặc phím (ví dụ: tach, ctrl z, khung hinh, ?...)"
+              />
+              <div class="chips" id="sc-chips">
+                <button type="button" class="chip active" data-group="all">Tất cả</button>
+                <button type="button" class="chip" data-group="phat">Phát & xem</button>
+                <button type="button" class="chip" data-group="sua">Chỉnh sửa</button>
+                <button type="button" class="chip" data-group="timeline">Timeline</button>
+                <button type="button" class="chip" data-group="chu">Chữ & phụ đề</button>
+                <button type="button" class="chip" data-group="chung">Chung</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nhóm</th>
+                  <th>Thao tác</th>
+                  <th>Phím tắt / Thao tác chuột</th>
+                </tr>
+              </thead>
+              <tbody id="sc-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 10. Cập nhật & Lỗi thường gặp -->
+        <section id="loi-thuong-gap">
+          <div class="section-header">
+            <span class="section-badge">10</span>
+            <h2>Tự cập nhật ứng dụng, Quản lý dung lượng & Xử lý lỗi</h2>
+          </div>
+          <p>
+            Bấm nút <strong>i (Thông tin ứng dụng)</strong> ở góc phải trên cùng để kiểm tra phiên bản mới, quản lý dung lượng
+            bộ nhớ đệm / model AI, hoặc xuất gói chẩn đoán khi cần hỗ trợ kỹ thuật:
+          </p>
+
+          <div class="shot-grid">
+            <figure class="shot">
+              <img src="anh/thong-tin-ung-dung.png" alt="Hộp thoại Thông tin ứng dụng" />
+              <figcaption>
+                <span>Hộp thoại Thông tin ứng dụng: Dọn bộ nhớ đệm, Xoá model AI để giải phóng ổ đĩa, Chép cấu hình MCP, Chép mẫu báo lỗi và Lưu gói log (.zip).</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="anh/cap-nhat-ung-dung.png" alt="Tự cập nhật ứng dụng trong hộp thoại Thông tin" />
+              <figcaption>
+                <span>Khi có bản mới: bấm "Cập nhật lên x.y.z" → tải có tiến độ, kiểm tra chữ ký số → "Khởi động lại để cập nhật" (tự lưu dự án trước khi cài).</span>
+                <span class="zoom-hint">🔍 Phóng to</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <h3>Bảng tra cứu lỗi thường gặp</h3>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 34%">Dấu hiệu</th>
+                <th>Nguyên nhân & Cách xử lý</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Video có tiếng nhưng hình đen</strong>, hoặc hiện <em>"Đang tạo bản xem trước"</em></td>
+                <td>
+                  Video quay từ iPhone (HEVC) hoặc định dạng ProRes/AVI mà WebView của Windows chưa phát trực tiếp được. App
+                  đang tự tạo bản xem trước H.264 ở nền — chỉ cần chờ thanh tiến độ chạy xong. Khi xuất video vẫn dùng file gốc.
+                </td>
+              </tr>
+              <tr>
+                <td>Ô media hoặc clip hiện <strong>Mất file</strong></td>
+                <td>
+                  File video/nhạc gốc đã bị đổi tên, di chuyển hoặc xoá ngoài ổ đĩa. Bấm vào ô đó trong Thư viện media (hoặc
+                  chuột phải) để chọn lại vị trí file mới.
+                </td>
+              </tr>
+              <tr>
+                <td>Thông báo <strong>"Không lưu được dự án"</strong></td>
+                <td>
+                  Ổ đĩa <code>C:</code> bị đầy hoặc mất quyền ghi. Dữ liệu vẫn còn trên màn hình và app tự thử lưu lại; hãy mở
+                  <strong>Thông tin ứng dụng (nút i)</strong> → bấm <strong>Dọn bộ nhớ đệm</strong> hoặc <strong>Xoá model</strong>
+                  để giải phóng dung lượng ổ đĩa.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Xuất video báo lỗi giữa chừng</strong></td>
+                <td>
+                  App tự động thử xuất lại bằng bộ mã hoá CPU nếu trình điều khiển GPU gặp lỗi. Nếu vẫn lỗi, hãy mở lại hộp
+                  thoại Xuất và chọn rõ bộ mã hoá CPU (<code>libx264</code>), đồng thời kiểm tra dung lượng trống ở thư mục lưu.
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Giọng clone MiniMax biến mất</strong></td>
+                <td>
+                  Dịch vụ cloud MiniMax tự xoá giọng clone nếu không phát sinh lượt đọc trong 7 ngày. Hãy clone lại từ file mẫu
+                  (hoặc dùng giọng <strong>VieNeu offline</strong> để lưu vĩnh viễn trên máy).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <strong>Cách gửi báo lỗi cho kỹ thuật viên:</strong> Mở <strong>Thông tin ứng dụng (nút i)</strong> → bấm
+            <strong>Chép mẫu báo lỗi</strong> (để dán thông tin máy vào tin nhắn) và bấm <strong>Lưu gói log (.zip)</strong> để
+            gửi file nén log. Hệ thống đã tự động ẩn toàn bộ API Key trong log.
+          </div>
+
+          <h3>Nơi lưu dữ liệu trên máy Windows</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Đường dẫn thư mục</th>
+                <th>Nội dung</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>%APPDATA%\vn.kolstudio.desktop\du-an</code></td>
+                <td>Toàn bộ dự án của bạn (mỗi dự án 1 thư mục gồm <code>du-an.json</code> và ảnh bìa).</td>
+              </tr>
+              <tr>
+                <td><code>%APPDATA%\vn.kolstudio.desktop\media-mau</code></td>
+                <td>3 file media tự sinh dùng chung cho các Dự án mẫu.</td>
+              </tr>
+              <tr>
+                <td><code>%APPDATA%\vn.kolstudio.desktop\logs</code></td>
+                <td>Log xoay vòng của lõi Rust và dịch vụ AI.</td>
+              </tr>
+              <tr>
+                <td><code>%LOCALAPPDATA%\vn.kolstudio.desktop\goi-ai</code></td>
+                <td>Gói môi trường Python & thư viện AI tải theo nhu cầu.</td>
+              </tr>
+              <tr>
+                <td><code>%LOCALAPPDATA%\vn.kolstudio.desktop\media</code></td>
+                <td>Bộ nhớ đệm: ảnh thu nhỏ, dạng sóng, bản xem trước proxy H.264 (xoá an toàn bằng nút <em>Dọn bộ nhớ đệm</em>).</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 11. Dành cho chủ dự án -->
+        <section id="danh-cho-chu-du-an">
+          <div class="section-header">
+            <span class="section-badge">11</span>
+            <h2>Dành cho Chủ dự án: Đóng gói & Kích hoạt trang Release công khai</h2>
+          </div>
+
+          <div class="callout warn">
+            <strong>Vì sao link <code>github.com/minhhy19/kol-studio-phat-hanh</code> hiện báo 404 Not Found?</strong><br />
+            Repo mã nguồn chính <code>minhhy19/kol-studio</code> của bạn đang để <strong>Private (riêng tư)</strong> để bảo mật
+            code. Vì người dùng cuối và trình tự cập nhật trong app không thể tải file từ repo Private nếu không có tài khoản
+            của bạn, PR #152 thiết kế cơ chế đẩy file cài đặt <code>.exe</code> và gói AI sang một repo <strong>Public (công khai)</strong>
+            tên là <code>minhhy19/kol-studio-phat-hanh</code> (chỉ chứa file bản cài trong mục Releases, không chứa mã nguồn).
+            Repo công khai này <strong>cần bạn bấm tạo 1 lần duy nhất</strong>.
+          </div>
+
+          <h3>Cách 1: Thiết lập một lần để tự động phát hành & tự cập nhật trên GitHub (Khuyên dùng)</h3>
+          <ol>
+            <li>
+              <strong>Tạo repo phát hành công khai (chỉ mất 5 giây bằng lệnh <code>gh</code>):</strong>
+              <pre><code>gh repo create minhhy19/kol-studio-phat-hanh --public --description "Bản cài đặt KOL Studio cho Windows"</code></pre>
+            </li>
+            <li>
+              <strong>Đặt 2 Secret vào repo <code>minhhy19/kol-studio</code>:</strong>
+              <ul>
+                <li>
+                  <code>TAURI_SIGNING_PRIVATE_KEY</code>: nội dung của file khoá ký tự cập nhật đã được tạo sẵn trên máy bạn tại
+                  <code>%USERPROFILE%\.tauri\kol-studio-cap-nhat.key</code> (nhớ sao lưu file này ở nơi an toàn).
+                </li>
+                <li>
+                  <code>RELEASE_TOKEN</code>: Personal Access Token của GitHub có quyền <code>Contents: Read and write</code>
+                  trên repo <code>minhhy19/kol-studio-phat-hanh</code>.
+                </li>
+              </ul>
+              Lệnh đặt nhanh:
+              <pre><code>gh secret set TAURI_SIGNING_PRIVATE_KEY --repo minhhy19/kol-studio &lt; "%USERPROFILE%\.tauri\kol-studio-cap-nhat.key"</code></pre>
+            </li>
+            <li>
+              <strong>Mỗi lần phát hành bản mới (ví dụ <code>v0.1.0</code>):</strong>
+              <pre><code>git tag -a v0.1.0 -m "Bản phát hành KOL Studio 0.1.0"
+git push origin v0.1.0</code></pre>
+              Workflow <code>.github/workflows/release.yml</code> sẽ tự build bộ cài NSIS có chữ ký số, đóng gói AI, tạo
+              <code>latest.json</code> và đăng cả 5 file lên
+              <code>https://github.com/minhhy19/kol-studio-phat-hanh/releases/latest</code>.
+            </li>
+          </ol>
+
+          <h3>Cách 2: Đóng gói file <code>.exe</code> trực tiếp trên máy để gửi ngay (Zalo / Google Drive)</h3>
+          <p>Nếu muốn xuất ngay file cài đặt trên máy mà chưa cần đẩy tag GitHub:</p>
+          <pre><code>cd desktop
+npm run build:nsis</code></pre>
+          <p>
+            File cài đặt hoàn chỉnh (đã kèm sẵn <code>ffmpeg.exe</code> và <code>ffprobe.exe</code>) nằm tại:<br />
+            <code>desktop\src-tauri\target\release\bundle\nsis\KOL Studio_0.1.0_x64-setup.exe</code>
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <!-- Lightbox xem ảnh phóng to -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-label="Xem ảnh phóng to">
+      <div class="lightbox-inner">
+        <img id="lightbox-img" src="" alt="" />
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+      </div>
+    </div>
+
+    <script>
+      // Dữ liệu phím tắt đồng bộ với desktop/src/help/shortcuts.ts
+      const SHORTCUTS = [
+        { group: "phat", groupLabel: "Phát & xem", action: "Phát / tạm dừng", keys: [["Space"]] },
+        { group: "phat", groupLabel: "Phát & xem", action: "Lùi / tiến một khung hình", keys: [["←"], ["→"]] },
+        { group: "phat", groupLabel: "Phát & xem", action: "Lùi / tiến một giây", keys: [["Shift", "←"], ["Shift", "→"]] },
+        { group: "phat", groupLabel: "Phát & xem", action: "Về đầu / tới cuối video", note: "Khi đang chọn thước thời gian", keys: [["Home"], ["End"]] },
+        { group: "sua", groupLabel: "Chỉnh sửa", action: "Hoàn tác", keys: [["Ctrl", "Z"]] },
+        { group: "sua", groupLabel: "Chỉnh sửa", action: "Làm lại", keys: [["Ctrl", "Y"], ["Ctrl", "Shift", "Z"]] },
+        { group: "sua", groupLabel: "Chỉnh sửa", action: "Tách clip tại đầu phát", keys: [["Ctrl", "B"]] },
+        { group: "sua", groupLabel: "Chỉnh sửa", action: "Xoá clip đang chọn", keys: [["Delete"]] },
+        { group: "sua", groupLabel: "Chỉnh sửa", action: "Chọn thêm hoặc bỏ chọn clip", keys: [["Ctrl", "Bấm"], ["Shift", "Bấm"]] },
+        { group: "sua", groupLabel: "Chỉnh sửa", action: "Huỷ thao tác đang kéo", note: "Khi đang kéo clip hoặc khung chỉnh", keys: [["Esc"]] },
+        { group: "timeline", groupLabel: "Timeline", action: "Phóng to / thu nhỏ timeline", keys: [["Ctrl", "="], ["Ctrl", "-"]] },
+        { group: "timeline", groupLabel: "Timeline", action: "Phóng to / thu nhỏ quanh con trỏ", keys: [["Ctrl", "Lăn chuột"]] },
+        { group: "timeline", groupLabel: "Timeline", action: "Cuộn ngang timeline", keys: [["Shift", "Lăn chuột"]] },
+        { group: "chu", groupLabel: "Chữ & phụ đề", action: "Sửa lời ngay trên khung xem", note: "Bấm đúp vào chữ hoặc câu phụ đề", keys: [["Bấm đúp"]] },
+        { group: "chu", groupLabel: "Chữ & phụ đề", action: "Xong sửa lời trên khung xem", keys: [["Ctrl", "Enter"]] },
+        { group: "chu", groupLabel: "Chữ & phụ đề", action: "Lưu lời câu phụ đề", note: "Trong tab Phụ đề", keys: [["Enter"]] },
+        { group: "chu", groupLabel: "Chữ & phụ đề", action: "Bỏ lời vừa sửa", keys: [["Esc"]] },
+        { group: "chung", groupLabel: "Chung", action: "Mở hướng dẫn và phím tắt", keys: [["?"], ["F1"]] },
+        { group: "chung", groupLabel: "Chung", action: "Đóng hộp thoại, menu", keys: [["Esc"]] },
+        { group: "chung", groupLabel: "Chung", action: "Xoá file khỏi thư viện", note: "Khi đang chọn ô trong Thư viện media", keys: [["Delete"]] },
+      ];
+
+      function normalize(str) {
+        return str
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[đĐ]/g, "d")
+          .toLowerCase();
+      }
+
+      let activeGroup = "all";
+      const searchEl = document.getElementById("sc-search");
+      const tbodyEl = document.getElementById("sc-tbody");
+      const chipsEl = document.getElementById("sc-chips");
+
+      function renderShortcuts() {
+        const raw = searchEl.value.trim();
+        const terms = normalize(raw).split(/\s+/).filter(Boolean);
+
+        const filtered = SHORTCUTS.filter((sc) => {
+          if (activeGroup !== "all" && sc.group !== activeGroup) return false;
+          if (!raw) return true;
+          if (raw.length === 1 && !/\p{L}|\d/u.test(raw)) {
+            return sc.keys.some((combo) => combo.includes(raw));
+          }
+          const haystack = normalize(
+            [sc.groupLabel, sc.action, sc.note || "", sc.keys.map((c) => c.join(" ")).join(" ")].join(" ")
+          );
+          return terms.every((t) => haystack.includes(t));
+        });
+
+        if (filtered.length === 0) {
+          tbodyEl.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:20px">Không có phím tắt nào khớp.</td></tr>';
+          return;
+        }
+
+        tbodyEl.innerHTML = filtered
+          .map((sc) => {
+            const keysHtml = sc.keys
+              .map((combo) => combo.map((k) => `<kbd>${k}</kbd>`).join(" + "))
+              .join(' <span style="color:var(--text-muted);font-size:12px">hoặc</span> ');
+            const noteHtml = sc.note ? `<div style="font-size:12px;color:var(--text-muted)">${sc.note}</div>` : "";
+            return `<tr>
+              <td style="color:var(--accent-text);font-weight:600;font-size:12.5px">${sc.groupLabel}</td>
+              <td><strong>${sc.action}</strong>${noteHtml}</td>
+              <td>${keysHtml}</td>
+            </tr>`;
+          })
+          .join("");
+      }
+
+      searchEl.addEventListener("input", renderShortcuts);
+      chipsEl.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-group]");
+        if (!btn) return;
+        activeGroup = btn.dataset.group;
+        chipsEl.querySelectorAll(".chip").forEach((c) => c.classList.toggle("active", c === btn));
+        renderShortcuts();
+      });
+      renderShortcuts();
+
+      // Lightbox xem ảnh lớn
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lightbox-img");
+      const lbCap = document.getElementById("lightbox-caption");
+
+      document.querySelectorAll("figure.shot img").forEach((img) => {
+        img.addEventListener("click", () => {
+          lbImg.src = img.src;
+          lbImg.alt = img.alt;
+          const cap = img.closest("figure").querySelector("figcaption span");
+          lbCap.textContent = cap ? cap.textContent : img.alt;
+          lightbox.classList.add("open");
+        });
+      });
+
+      lightbox.addEventListener("click", () => lightbox.classList.remove("open"));
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") lightbox.classList.remove("open");
+      });
+
+      // Đánh dấu mục đang xem ở thanh bên
+      const sections = [...document.querySelectorAll("main section[id]")];
+      const navLinks = [...document.querySelectorAll(".sidebar .nav-link")];
+      window.addEventListener(
+        "scroll",
+        () => {
+          let current = sections[0]?.id;
+          for (const sec of sections) {
+            if (sec.getBoundingClientRect().top <= 120) current = sec.id;
+          }
+          navLinks.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === `#${current}`));
+        },
+        { passive: true }
+      );
+    </script>
+  </body>
+</html>
+
